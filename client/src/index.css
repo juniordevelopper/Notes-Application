@@ -1,0 +1,143 @@
+/* 1. Ranglar va Global Sozlamalar */
+:root {
+  --primary: #c2a8ff;
+  --success: #4fd1c5;
+  --danger: #ff6b6b;
+  --warning: #fbd38d;
+  --bg-dark: #050a18;
+  --glass: rgba(255, 255, 255, 0.05);
+  --border: rgba(255, 255, 255, 0.08);
+  --text-main: #ffffff;
+  --text-dim: #a0aec0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  height: 100vh;
+  color: var(--text-main);
+  font-family: 'Inter', sans-serif;
+  background: var(--bg-dark);
+  background-image: radial-gradient(at 0% 0%, #1a1b4b 0, transparent 45%), 
+                    radial-gradient(at 100% 100%, #2e1035 0, transparent 45%);
+  overflow: hidden;
+}
+
+/* 2. Layout (Split-Screen) */
+.app-container { display: flex; flex-direction: column; height: 100vh; }
+
+.main-layout {
+  display: flex;
+  height: 90vh; /* Navbar uchun joy */
+  width: 100%;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.list-panel { width: 80%; padding: 0 40px 120px; overflow-y: auto; transition: width 0.5s ease; }
+.recent-panel { width: 20%; background: rgba(0,0,0,0.2); border-left: 1px solid var(--border); padding: 20px; }
+.editor-panel { width: 0%; opacity: 0; overflow: hidden; background: rgba(5, 10, 24, 0.6); backdrop-filter: blur(25px); transition: all 0.5s ease; }
+
+/* Editor Ochiq Holati */
+.editor-open .list-panel { width: 25%; }
+.editor-open .editor-panel { width: 55%; opacity: 1; padding: 20px 40px; border-left: 1px solid var(--border); }
+
+/* 3. Ixcham Cardlar */
+.note-card {
+  background: var(--glass);
+  border-radius: 12px;
+  padding: 15px;
+  margin-bottom: 12px;
+  position: relative;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: 0.2s;
+}
+
+.note-card:hover { background: rgba(255, 255, 255, 0.1); transform: translateY(-2px); }
+.note-card.pinned { border-left: 4px solid var(--primary); background: rgba(194, 168, 255, 0.05); }
+
+.card-actions {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  gap: 6px;
+  opacity: 0;
+  transition: 0.3s ease;
+}
+
+.note-card:hover .card-actions { opacity: 1; }
+
+.action-btn {
+  background: rgba(0,0,0,0.5);
+  border: none;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+/* 4. Editor Stillari */
+.editor-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+.editor-title {
+  background: transparent; border: none; color: white;
+  font-size: 28px; font-weight: 800; width: 100%; outline: none;
+  font-family: 'Manrope', sans-serif;
+}
+.editor-divider { height: 1px; width: 60%; background: linear-gradient(90deg, var(--primary), transparent); margin: 15px 0; }
+.editor-body {
+  flex: 1; outline: none; font-size: 17px; line-height: 1.6;
+  color: var(--text-dim); min-height: 50vh; overflow-y: auto;
+}
+
+/* 5. Muallaq Mac Dock (Floating) */
+.dock-wrapper {
+  position: fixed;
+  bottom: 25px;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+.mac-dock {
+  display: flex;
+  gap: 15px;
+  pointer-events: auto;
+  align-items: flex-end; /* Turna qatori uchun */
+  padding: 10px;
+}
+
+.dock-item {
+  width: 50px;
+  height: 50px;
+  border-radius: 14px;
+  border: none;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(15px);
+  color: white;
+  cursor: pointer;
+  transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dock-item:hover { transform: scale(1.3) translateY(-12px); background: var(--primary); color: #000; }
+.dock-item.active { background: var(--primary); color: #000; transform: translateY(-5px); box-shadow: 0 10px 20px rgba(194, 168, 255, 0.3); }
+
+/* Staggered (Turna qatori) offsets */
+.st-low { transform: translateY(5px); }
+.st-mid { transform: translateY(0px); }
+.st-high { transform: translateY(-8px); }
+
+/* 6. Utils */
+.custom-scrollbar::-webkit-scrollbar { width: 3px; }
+.custom-scrollbar::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
+.toast { position: fixed; top: 25px; right: 25px; padding: 12px 25px; border-radius: 8px; font-weight: 700; color: #000; z-index: 2000; }

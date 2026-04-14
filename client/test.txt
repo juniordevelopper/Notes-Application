@@ -1,0 +1,60 @@
+(async () => {
+    const API_URL = 'http://localhost:5000/api/v1/notes';
+    
+    const titles = [
+        "Loyiha rejalashtirish", "Bozorlik ro'yxati", "Frontend xatosi fix", 
+        "Dizayn sprint", "Mijoz bilan uchrashuv", "Backend API hujjati", 
+        "Sport mashg'ulotlari", "Yangi g'oyalar", "Kitob mutolaasi", 
+        "Sayohat rejalari", "Moliyaviy hisobot", "Team Sync"
+    ];
+
+    const contents = [
+        "Bugun juda samarali kun bo'ldi. Loyihaning MERN stack qismini tugatdik.",
+        "Sut, non, tuxum va mevalar olish kerak. Kechki ovqatga tayyorgarlik.",
+        "React dagi split-screen mantiqini biroz to'g'irlash kerak. Transition sekin.",
+        "Mac OS dock dizayni ajoyib chiqdi. Hover effektlarini yanada silliqlashtirish.",
+        "Mijoz yangi funksiyalar qo'shishni so'radi: rasm va video yuklash imkoniyati.",
+        "MongoDB ulanishini tekshirish. Kesh tizimini qo'shish haqida o'ylash."
+    ];
+
+    const actions = ["Yaratildi", "Tahrirlandi", "Nusxalandi", "Qadaldi", "Arxivlandi"];
+
+    console.log("🚀 Demo ma'lumotlarni yuborish boshlandi...");
+
+    // Har bir bo'lim uchun (0: Home, 1: Archive, 2: Trash)
+    for (let type = 0; type < 3; type++) {
+        // Oxirgi 10 kun uchun
+        for (let day = 0; day < 10; day++) {
+            const notesPerDay = Math.floor(Math.random() * 3) + 1; // Har bir kun uchun 1-3 ta note
+
+            for (let i = 0; i < notesPerDay; i++) {
+                const date = new Date();
+                date.setDate(date.getDate() - day);
+                date.setHours(Math.floor(Math.random() * 24), Math.floor(Math.random() * 60));
+
+                const note = {
+                    title: titles[Math.floor(Math.random() * titles.length)],
+                    content: contents[Math.floor(Math.random() * contents.length)],
+                    isPinned: Math.random() > 0.8,
+                    isArchived: type === 1,
+                    isTrashed: type === 2,
+                    lastAction: actions[Math.floor(Math.random() * actions.length)],
+                    updatedAt: date,
+                    createdAt: date
+                };
+
+                try {
+                    await fetch(API_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(note)
+                    });
+                } catch (err) {
+                    console.error("Xato yuz berdi:", err);
+                }
+            }
+        }
+    }
+
+    console.log("✅ Barcha demo ma'lumotlar bazaga muvaffaqiyatli kiritildi! Sahifani yangilang.");
+})();

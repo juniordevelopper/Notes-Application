@@ -1,0 +1,30 @@
+# 1. Dependency papkalari (juda og'ir va yuklash shart emas)
+node_modules/
+client/node_modules/
+server/node_modules/
+
+# 2. Ma'lumotlar bazasi (Siz yaratgan mahalliy MongoDB papkasi)
+server/db_data/
+
+# 3. Build natijalari (Frontendni production versiyasi)
+client/dist/
+
+# 4. Atrof-muhit o'zgaruvchilari (Xavfsizlik uchun)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# 5. IDE va Tizim fayllari
+.vscode/
+.idea/
+.DS_Store
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 6. Kesh fayllari
+client/.vite/
+.eslintcache
